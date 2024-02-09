@@ -52,4 +52,12 @@ public class PlayerController : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         characterController.Move(move * Speed * Time.deltaTime);
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.tag == "Pickup")
+        {
+            hit.gameObject.GetComponent<PickUp>().Picked();
+        }
+    }
 }

@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     bool endGame = false;
     bool win = false;
 
+    public int Points = 0;
+
+    public int RedKeys, GreenKeys, BlueKeys = 0;
+
 
     void Start()
     {
@@ -30,6 +34,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         PauseCheck();
+        PickupStatistics();
     }
 
     void Stopper()
@@ -84,5 +89,41 @@ public class GameManager : MonoBehaviour
         Debug.Log("Resume game");
         Time.timeScale = 1;
         gamePaused = false;
+    }
+
+    public void AddPoints(int points)
+    {
+        Points += points;
+    }
+
+    public void AddTime(int timeToAdd)
+    {
+        timeToEnd += timeToAdd;
+    }
+
+    public void FreezTime(int time)
+    {
+        CancelInvoke(nameof(Stopper));
+        InvokeRepeating(nameof(Stopper), time, 1);
+    }
+
+    void PickupStatistics()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            print("Current timeToEnd: " + timeToEnd);
+            print("Keys: red: " + RedKeys + " green: " + GreenKeys + " Blue: " + BlueKeys);
+            print("Points: " + Points);
+        }
+    }
+
+    public void AddKey(KeyColor color)
+    {
+        if (color == KeyColor.RedKey)
+            RedKeys++;
+        else if (color == KeyColor.GreenKey)
+            GreenKeys++;
+        else if (color == KeyColor.BlueKey)
+            BlueKeys++;
     }
 }
